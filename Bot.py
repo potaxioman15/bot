@@ -130,5 +130,44 @@ async def reset_history(ctx, member: discord.Member = None):
     else:
         await ctx.send(f"Historial de {target.display_name} reiniciado ✅")
 
-bot.run(discord_token)
+import random  # Solo si no lo tienes ya importado
 
+# ---------- COMANDOS DE ENTRETENIMIENTO ----------
+
+# Comando 8ball
+@bot.command(name="8ball")
+async def eight_ball(ctx, *, pregunta: str):
+    respuestas = [
+        "Sí",
+        "No",
+        "Tal vez",
+        "Definitivamente sí",
+        "Definitivamente no",
+        "Pregunta otra vez más tarde",
+        "cállate."
+    ]
+    respuesta = random.choice(respuestas)
+    await ctx.send(respuesta)
+
+# Comando ruleta rusa
+@bot.command(name="ruleta")
+async def ruleta_rusa(ctx):
+    disparo = random.randint(1, 6)
+    if disparo == 1:
+        await ctx.send("BOOM! Has perdido...")
+    else:
+        await ctx.send("Puf, estás vivo... por ahora.")
+
+# Comando dado
+@bot.command(name="dado")
+async def tirar_dado(ctx):
+    resultado = random.randint(1, 6)
+    await ctx.send(f"Has sacado un {resultado}.")
+
+# Comando moneda
+@bot.command(name="moneda")
+async def lanzar_moneda(ctx):
+    resultado = random.choice(["Cara", "Cruz"])
+    await ctx.send(f"Has lanzado la moneda: {resultado}")
+
+bot.run(DISCORD_TOKEN)
