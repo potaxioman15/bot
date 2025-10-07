@@ -4,7 +4,7 @@ from google import genai
 from dotenv import load_dotenv
 import os
 import asyncio
-
+from download import descargar_video
 load_dotenv("wahh.env")
 
 gemini_api_key = os.getenv("GEMINI_API_KEY")
@@ -130,7 +130,59 @@ async def reset_history(ctx, member: discord.Member = None):
     else:
         await ctx.send(f"Historial de {target.display_name} reiniciado ✅")
 
+
 import random  # Solo si no lo tienes ya importado
+
+# ---------- COMANDOS DE ENTRETENIMIENTO ----------
+
+# Comando 8ball
+@bot.command(name="8ball")
+async def eight_ball(ctx, *, pregunta: str):
+    respuestas = [
+        "Sí",
+        "No",
+        "Tal vez",
+        "Definitivamente sí",
+        "Definitivamente no",
+        "Pregunta otra vez más tarde",
+        "cállate."
+    ]
+    respuesta = random.choice(respuestas)
+    await ctx.send(respuesta)
+
+# Comando ruleta rusa
+@bot.command(name="ruleta")
+async def ruleta_rusa(ctx):
+    disparo = random.randint(1, 6)
+    if disparo == 1:
+        await ctx.send("BOOM! Has perdido...")
+    else:
+        await ctx.send("Puf, estás vivo... por ahora.")
+
+# Comando dado
+@bot.command(name="dado")
+async def tirar_dado(ctx):
+    resultado = random.randint(1, 6)
+    await ctx.send(f"Has sacado un {resultado}.")
+
+# Comando moneda
+@bot.command(name="moneda")
+async def lanzar_moneda(ctx):
+    resultado = random.choice(["Cara", "Cruz"])
+    await ctx.send(f"Has lanzado la moneda: {resultado}")
+
+@bot.command(name="descargar")
+async def descargar(ctx, url: str, formato: str = "mp4"):
+    await ctx.send("⏳ Descargando, espera un momento...")
+    archivo = descargar_video(url, formato)
+    if archivo and os.path.exists(archivo):
+        await ctx.send("✅ Listo, aquí tienes:", file=discord.File(archivo))
+        os.remove(archivo)  # Limpieza automática del archivo temporal
+    else:
+        await ctx.send("❌ No se pudo descargar el archivo.")
+
+bot.run(discord_token)
+>>>>>>> b697b19 (comando de !descarga)
 
 # ---------- COMANDOS DE ENTRETENIMIENTO ----------
 
